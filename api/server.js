@@ -1,15 +1,20 @@
 const express = require('express');
-
+const User = require('./users/model')
 const server = express();
-server.use(express.json());
-
 
 server.get('/api/users', (req, res) => {
-    res.json('users')
+    User.find()
+    .then( users => {
+        res.json(users)
+    })
+    .catch( err => {
+        res.status(500).json({
+            message: "The users information could not be retrieved",
+            err: err.message,
+            stack: err.stack,
+        })
+    })
 })
-
-
-
 
 server.use('*', (_req, res) => {
     res.status(404).json({
@@ -17,4 +22,4 @@ server.use('*', (_req, res) => {
     })
 })
 
-module.exports = { server };
+module.exports = server;
