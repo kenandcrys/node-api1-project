@@ -18,7 +18,22 @@ server.get('/api/users', (req, res) => {
 
 server.delete('/api/users/:id', (req, res) => {
     const userId = req.params.id;
-    
+    User.remove(userId)
+        .then( user => {
+            if(!user) {
+                return res.status(404).json({ message: "The user with the specified ID does not exist" })
+            } else{
+                res.json(user)
+            }
+
+        })
+        .catch( err => {
+            res.status(500).json({
+                message: "The user could not be removed",
+                err: err.message,
+                stack: err.stack,
+            })
+        })
 })
 
 server.get('/api/users/:id', (req, res) => {
@@ -41,8 +56,6 @@ server.get('/api/users/:id', (req, res) => {
         })
     })
   });
-
-
 
 server.use('*', (_req, res) => {
     res.status(404).json({
