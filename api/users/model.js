@@ -37,6 +37,7 @@ const insert = ({ name, bio }) => {
 }
 
 const update = (id, changes) => {
+  console.log("ID", id, "Changes", changes)
   // UPDATE users SET name = 'foo', bio = 'bar WHERE id = 1;
   const user = users.find(user => user.id === id)
   if (!user) return Promise.resolve(null)
